@@ -10,13 +10,14 @@ class FirebaseDB:
     """
     Firebase CRUD helper class, NEED 'certification.json' in same directory
     """
+
     def __init__(self):
         """Authentication"""
         load_dotenv(verbose=True)
         DATABASE_URL = os.getenv('DATABASE_URL')
         cred = credentials.Certificate('certification.json')
         firebase_admin.initialize_app(cred, {
-            'databaseURL' : DATABASE_URL
+            'databaseURL': DATABASE_URL
         })
 
     # create/update
@@ -31,6 +32,11 @@ class FirebaseDB:
         else:
             ref = db.reference()
         return ref.get()
+
+    # 데이터 추가 함수
+    def add_data(self, collection, data: dict):
+        ref = db.reference(collection)
+        ref.update(data)
 
     # delete
     def delete(self, v):
