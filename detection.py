@@ -12,10 +12,11 @@ import math
 from gtts import gTTS 
 from dotenv import load_dotenv
 from playsound import playsound 
+import sys
 
 aed_location = "seoul "
 address = "서울 중랑구 "
-detect = "2"
+detect = sys.argv[1]
 
 
 # 주소를 위도, 경도로 반환하는 함수
@@ -121,11 +122,11 @@ firebase = pyrebase.initialize_app(config)
 
 
 
-uploadfile = "/home/kobot/BBiyongi/test_video.mp4"
+uploadfile = sys.argv[3]
 
 s = os.path.splitext(uploadfile)[1]
 
-now = datetime.today().strftime("%Y%m%d_%H%M")
+now = sys.argv[2]
 filename = now + s
 
 #Upload files to Firebase
@@ -142,7 +143,7 @@ address = db.child("cam1_address").get().val()
 print(address)
            
 
-if (detect =="2") :
+if (detect =="2" or detect ==2) :
    geo = geocoding(address)
    my_longitude = geo[0]
    my_latitude = geo[1]
@@ -173,7 +174,6 @@ else :
       "time" : filename[:-4] ,
       "fileUrl" : fileUrl }
    db.child(str(filename).replace('.mp4', '')).set(data)
-
 
 
 
